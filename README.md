@@ -68,12 +68,13 @@ srun --job-name=DPSGD --nodes=8 --tasks-per-node=1 --cpus-per-task=1 --time=05:0
 
 All the implementations are compiled with `PyTorch` and `OpenMPI` within `mpi4py`. We conduct experiments on `NYU HPC` cluster with `100Gbit/s ` network. In all of our experiments, we use `RTX8000 GPU` as workers. 
 
-####Implementations
+#### Implementations
+
 All algorithms are trained for a sufficiently long time until convergence or over-fitting. The learning rate is fine-tuned for the **D-PSGD** baseline and then used for all other algorithms. Learning rate decay and adjust according to the number of finished mini-batches in the program. The batch size of baseline and the mini-batch size of Non-blocking algorithm are the same.
 
 
 
-###Commands to Run the Code
+### Run LLDSGD
 
 To run the LLDSGD, use the following commands:
 
