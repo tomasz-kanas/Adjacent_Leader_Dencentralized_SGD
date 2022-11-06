@@ -11,7 +11,7 @@ The code run on a environment which has `PyTorch` with `CUDA `aware` MPI`, it is
 
 
 
-###How to use this general library?
+### How to use this general library? 
 
 This code can be use as a general framework to implement any centralized/ decentralized, synchronous/ asynchronous distributed SGD algorithms. It includes **ring all reduce**, **D-PSGD**, **MATCHA**, **ALSGD**,  and **centralized SGD** with parameter server. If you want to extend the framework to any other algorithm, please :
 
