@@ -50,7 +50,7 @@ from graph_manager import FixedProcessor, MatchaProcessor
 from communicator import *
 
 
-## SYNC_ALLREDUCE NEED to be rewrite using distributed
+## SYNC_ALLREDUCE: gaurantee all models have the same initialization
 def sync_allreduce(model, rank, size):
     senddata = {}
     recvdata = {}
@@ -140,7 +140,7 @@ def run(rank, size):
 
     # guarantee all local models start from the same point
     # can be removed
-    sync_allreduce(model, rank, size)
+    #sync_allreduce(model, rank, size)
 
     # init recorder
     comp_time, comm_time = 0, 0
@@ -303,7 +303,6 @@ if __name__ == '__main__':
     parser.add_argument('--warmup', action='store_true', help='use lr warmup or not')
     parser.add_argument('--nesterov', action='store_true', help='use nesterov momentum or not')
     parser.add_argument('--matcha', action='store_true', help='use MATCHA or not')
-    parser.add_argument('--LLDSGD', action='store_true', help='use MATCHA or not')
     parser.add_argument('--lr', default=0.8, type=float, help='learning rate')
     parser.add_argument('--bs', default=64, type=int, help='batch size on each worker')
     parser.add_argument('--epoch', '-e', default=10, type=int, help='total epoch')
@@ -327,7 +326,12 @@ if __name__ == '__main__':
     parser.add_argument('--isNonIID', default=False, type=bool, help='False: random partition; True: IID partition')
 
     #pull iteration
-    parser.add_argument('--iteration', type = int, default=40, help='experiment name')
+    parser.add_argument('--LLDSGD', action='store_true', help='use MATCHA or not')
+    parser.add_argument('--iteration', type = int, default=40, help='iteration to pull')
+    parser.add_argument('--c1', type = float, default=0.3, help='proportion for max degree neighbor')
+    parser.add_argument('--c2', type=float, default=0.1, help='proportion for best performance neighbor with lowest loss')
+    parser.add_argument('--p1', type=float, default=0.1, help='pull force for max degree neighbor')
+    parser.add_argument('--p2', type=float, default=0.1, help='pull force for best performance neighbor')
 
     args = parser.parse_args()
     if not args.description:
