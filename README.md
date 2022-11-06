@@ -2,7 +2,7 @@
 
 This repository is for paper ALDSGD: Adjacent Leader Decentralized SGD. 
 
-### Environment and Package
+## Environment and Package
 
 The code run on a environment which has `PyTorch` with `CUDA `aware` MPI`, it is compiled with `OpenMPI: 4.41, CUDA: 11.62, cuDNN: 8.14.1`. You need to install `mpi4py ` to run the code. 
 
@@ -11,7 +11,7 @@ The code run on a environment which has `PyTorch` with `CUDA `aware` MPI`, it is
 
 
 
-### How to use this general library? 
+## How to use this general library? 
 
 This code can be use as a general framework to implement any centralized/ decentralized, synchronous/ asynchronous distributed SGD algorithms. It includes **ring all reduce**, **D-PSGD**, **MATCHA**, **ALSGD**,  and **centralized SGD** with parameter server. If you want to extend the framework to any other algorithm, please :
 
@@ -20,7 +20,7 @@ This code can be use as a general framework to implement any centralized/ decent
 
 
 
-### Settings for Experiment
+## Settings for Experiments
 
 We run the experiments using the following settings:
 
@@ -83,7 +83,7 @@ All algorithms are trained for a sufficiently long time until convergence or ove
 
 
 
-### Run AL-DSGD
+## Run AL-SGD
 
 To run the AL-DSGD, use the following commands:
 
