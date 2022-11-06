@@ -1,6 +1,6 @@
-# LLDSGD: Local Leader Decentralized SGD
+# ALDSGD: Adjacent Leader Decentralized SGD
 
-This repository is for paper LLDSGD: Local Leader Decentralized SGD. 
+This repository is for paper ALDSGD: Adjacent Leader Decentralized SGD. 
 
 ### Environment and Package
 
@@ -74,12 +74,12 @@ All algorithms are trained for a sufficiently long time until convergence or ove
 
 
 
-### Run LLDSGD
+### Run AL-DSGD
 
-To run the LLDSGD, use the following commands:
+To run the AL-DSGD, use the following commands:
 
 ```
-LLDSGD:
+AL-DSGD:
 srun --job-name=LSGD_MATCHA --nodes=8 --tasks-per-node=1 --cpus-per-task=1 --time=05:00:00 --mem=10GB --gres=gpu:rtx8000:1 ~/pyenv/run-pytorch-mpi.bash  python /home/hh2537/LLDSGD/run_cuda.py \
 --lr 0.4 \
 --bs 16 \
