@@ -80,21 +80,24 @@ To run the AL-DSGD, use the following commands:
 
 ```
 AL-DSGD:
-srun --job-name=LSGD_MATCHA --nodes=8 --tasks-per-node=1 --cpus-per-task=1 --time=05:00:00 --mem=10GB --gres=gpu:rtx8000:1 ~/pyenv/run-pytorch-mpi.bash  python /home/hh2537/LLDSGD/run_cuda.py \
+srun --job-name=LSGD_DPSGD --nodes=8 --tasks-per-node=1 --cpus-per-task=1 --time=05:00:00 --mem=10GB --gres=gpu:rtx8000:1 ~/pyenv/run-pytorch-mpi.bash  python /home/hh2537/LLDSGD/run_cuda.py \
 --lr 0.4 \
 --bs 16 \
 --epoch 200 \
---matcha \
---LLDSGD \
 --budget 0.5 \
--n LLDSGD_MATCHA \
+-n LLDSGD_DPSGD \
 --model res \
+--LLDSGD \
 -p \
 --description experiment \
 --graphid 0 \
 --dataset cifar10 \
 --datasetRoot ./data/ \
---savePath ./LLDSGD_MATCHA_iter1_leader0.4_degree0.1 \
+--savePath ./LLDSGD_DPSGD_iter1 \
+--c1 0.3 \
+--c2 0.1 \
+--p1 0.2 \
+--p2 0.2 \
 --randomSeed 1234 \
 --isNonIID False \
 --iteration 1

@@ -600,7 +600,7 @@ class LLDSGDCommunicator(Communicator):
 
         return comm_time, new_model
 
-    def LLDSGDaveraging(self, active_flags, loss):
+    def LLDSGDaveraging(self, active_flags, loss, args):
         # store the loss and degree (LLDSGD)
         loss_list = [loss.tolist()]
         degree_List = list()
@@ -675,12 +675,15 @@ class LLDSGDCommunicator(Communicator):
             max_degree_model = torch.FloatTensor(max_degree_model)
 
 
-            self.recv_buffer = torch.mul(self.recv_buffer, 0.5)
-            self.recv_buffer += torch.mul(best_local_model, 0.4)
-            self.recv_buffer += torch.mul(max_degree_model, 0.1)
+            self.recv_buffer = torch.mul(self.recv_buffer, 1 - args.c1 - args.c2)
+            self.recv_buffer += torch.mul(best_local_model, args.c1)
+            self.recv_buffer += torch.mul(max_degree_model, args.c2)
             print("Add pull force from local leader and max degree worker")
 
-
+            best_worker_force = torch.mul(torch.sub(self.recv_buffer, best_local_model), args.p1)
+            max_degree_force = torch.mul(torch.sub(self.recv_buffer, max_degree_model), args.p2)
+            self.recv_buffer = torch.sub(self.recv_buffer, torch.add(max_degree_force, best_worker_force))
+            print("add additional step from local leader and max degree worker")
 
         self.comm.barrier()
         toc = time.time()
@@ -689,7 +692,7 @@ class LLDSGDCommunicator(Communicator):
 
 
 
-    def LLDSGDcommunicate(self, model, loss):
+    def LLDSGDcommunicate(self, model, loss, args):
         # get activated topology at current iteration
         active_flags = self.topology.active_flags[self.iter]
         self.iter += 1
@@ -718,7 +721,7 @@ class LLDSGDCommunicator(Communicator):
 
         # decentralized averaging according to activated topology
         # record the communication time
-        comm_time = self.LLDSGDaveraging(active_flags, loss)
+        comm_time = self.LLDSGDaveraging(active_flags, loss, args)
 
         # update local models
         new_model = self.LLSGD_reset_model(model)
