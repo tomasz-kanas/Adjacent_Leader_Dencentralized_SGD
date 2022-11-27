@@ -2,15 +2,6 @@
 
 This repository is for paper ALDSGD: Adjacent Leader Decentralized SGD. Authors: Haoze He, Anna Choromanska. The manuscript will be submitted to International Conference on Machine Learning (ICML-23).
 
-## Environment and Package
-
-The code run on a environment which has `PyTorch` with `CUDA `aware` MPI`, it is compiled with `OpenMPI: 4.41, CUDA: 11.62, cuDNN: 8.14.1`. You need to install `mpi4py ` to run the code. 
-
-- Please note that `torch.distributed` do not support complex asynchronous communication, that's why we use `mpi4py` instead.
-- Please not that `PyTorch` must build on `CUDA` aware `MPI`, otherwise it can not support `mpi4py` package.
-
-
-
 ## How to use this general library? 
 
 This code can be use as a general framework to implement any centralized/ decentralized, synchronous/ asynchronous distributed SGD algorithms. It includes **ring all reduce**, **D-PSGD**, **MATCHA**, **ALSGD**,  and **centralized SGD** with parameter server. If you want to extend the framework to any other algorithm, please :
@@ -18,7 +9,12 @@ This code can be use as a general framework to implement any centralized/ decent
 - Go to `communicator.py` to define your communication scheme. 
 - If it's decentralized SGD with topology network structure, you also need to go to `MACHA_util.py` to define your topology graph. 
 
+## Environment and Package
 
+The code run on a environment which has `PyTorch` with `CUDA `aware` MPI`, it is compiled with `OpenMPI: 4.41, CUDA: 11.62, cuDNN: 8.14.1`. You need to install `mpi4py ` to run the code. 
+
+- Please note that `torch.distributed` do not support complex asynchronous communication, that's why we use `mpi4py` instead.
+- Please note that `PyTorch` must build on `CUDA` aware `MPI`, otherwise it can not support `mpi4py` package.
 
 ## Settings for Experiments
 
