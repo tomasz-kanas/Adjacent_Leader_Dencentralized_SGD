@@ -1,6 +1,6 @@
 # ALDSGD: Adjacent Leader Decentralized SGD
 
-This repository is for paper ALDSGD: Adjacent Leader Decentralized SGD. 
+This repository is for paper ALDSGD: Adjacent Leader Decentralized SGD. Authors: Haoze He, Anna Choromanska. The manuscript will be submitted to International Conference on Machine Learning (ICML-23).
 
 ## Environment and Package
 
