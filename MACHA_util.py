@@ -91,8 +91,14 @@ def select_graph(graphid):
 
         # graph 5, 8-node ring
         [[(0, 1), (2, 3), (4, 5), (6, 7)],
-         [(0, 7), (2, 1), (4, 3), (6, 5)]]
+         [(0, 7), (2, 1), (4, 3), (6, 5)]],
 
+        # graph 6:
+        # Graph 0 with nodes 6 and 7 contracted
+        [[(1, 5), (0, 4), (2, 3)],
+         [(1, 0), (3, 5)],
+         [(1, 2), (5, 0)],
+         [(3, 1)]]
     ]
 
     return Graphs[graphid]

@@ -146,7 +146,7 @@ def run(rank, size):
     comp_time, comm_time = 0, 0
     recorder = util.Recorder(args, rank)
     losses = util.AverageMeter()
-    top1 = util.AverageMeter()
+    #top1 = util.AverageMeter()
     tic = time.time()
     itr = 0
 
@@ -180,9 +180,9 @@ def run(rank, size):
 
             # record training loss and accuracy
             record_start = time.time()
-            acc1 = util.comp_accuracy(output, target)
+            #acc1 = util.comp_accuracy(output, target)
             losses.update(loss.item(), data.size(0))
-            top1.update(acc1[0], data.size(0))
+            #top1.update(acc1[0], data.size(0))
             record_end = time.time()
 
             #   (backward pass. Needs to be rewrite for overlap accelerate.)
@@ -232,9 +232,12 @@ def run(rank, size):
         # evaluate test accuracy at the end of each epoch
         test_acc = util.test(model, test_loader)
 
-        recorder.add_new(record_time, comp_time, comm_time, epoch_time, top1.avg, losses.avg, test_acc)
-        print("rank: %d, epoch: %.3f, loss: %.3f, train_acc: %.3f, test_acc: %.3f epoch time: %.3f" % (
-        rank, epoch, losses.avg, top1.avg, test_acc, epoch_time))
+        #recorder.add_new(record_time, comp_time, comm_time, epoch_time, top1.avg, losses.avg, test_acc)
+        #print("rank: %d, epoch: %.3f, loss: %.3f, train_acc: %.3f, test_acc: %.3f epoch time: %.3f" % (
+        #rank, epoch, losses.avg, top1.avg, test_acc, epoch_time))
+        recorder.add_new(record_time, comp_time, comm_time, epoch_time, losses.avg, test_acc)
+        print("rank: %d, epoch: %.3f, loss: %.3f, train_acc: %.3f, epoch time: %.3f" % (
+        rank, epoch, losses.avg, test_acc, epoch_time))
         if rank == 0:
             print("comp_time: %.3f, comm_time: %.3f, comp_time_budget: %.3f, comm_time_budget: %.3f" % (
             comp_time, comm_time, comp_time / epoch_time, comm_time / epoch_time))
@@ -245,14 +248,12 @@ def run(rank, size):
         # reset recorders
         comp_time, comm_time = 0, 0
         losses.reset()
-        top1.reset()
+        #top1.reset()
         tic = time.time()
         # train_sampler = torch.utils.data.distributed.DistributedSampler()
 
+    recorder.add_total_time()
     recorder.save_to_file()
-
-
-
 
 
 def test(model):

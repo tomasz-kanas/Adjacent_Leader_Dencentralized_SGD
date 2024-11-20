@@ -1,4 +1,6 @@
 import os
+import shutil
+import json
 import numpy as np
 import time
 import argparse
@@ -319,54 +321,81 @@ class AverageMeter(object):
 
 class Recorder(object):
     def __init__(self, args, rank):
-        self.record_accuracy = list()
-        self.record_timing = list()
-        self.record_comp_timing = list()
-        self.record_comm_timing = list()
-        self.record_losses = list()
-        self.record_trainacc = list()
-        self.total_record_timing = list()
+        #self.record_accuracy = list()
+        #self.record_timing = list()
+        #self.record_comp_timing = list()
+        #self.record_comm_timing = list()
+        #self.record_losses = list()
+        #self.record_trainacc = list()
+        #self.total_record_timing = list()
         self.args = args
         self.rank = rank
-        self.saveFolderName = args.savePath + args.name + '_' + args.model
-        if rank == 0 and os.path.isdir(self.saveFolderName) == False and self.args.save:
+        self.saveFolderName = f"results/{args.savePath}"
+        if rank == 0 and self.args.save:
+            if os.path.exists(self.saveFolderName):
+                shutil.rmtree(self.saveFolderName)
             os.mkdir(self.saveFolderName)
+        self.training_stats = {
+            "batch_time": [],
+            "communication_time": [],
+            "computing_time": [],
+            "train_loss": [],
+            #"test_loss": [],
+            "test_acc": []
+        }
 
-    def add_new(self, record_time, comp_time, comm_time, epoch_time, top1, losses, test_acc):
-        self.total_record_timing.append(np.array(record_time))
-        self.record_timing.append(np.array(epoch_time))
-        self.record_comp_timing.append(np.array(comp_time))
-        self.record_comm_timing.append(np.array(comm_time))
-        self.record_trainacc.append(np.array(top1.cpu()))
-        self.record_losses.append(np.array(losses))
-        self.record_accuracy.append(np.array(test_acc.cpu()))
+
+    #def add_new(self, record_time, comp_time, comm_time, epoch_time, top1, losses, test_acc):
+    #    self.total_record_timing.append(np.array(record_time))
+    #    self.record_timing.append(np.array(epoch_time))
+    #    self.record_comp_timing.append(np.array(comp_time))
+    #    self.record_comm_timing.append(np.array(comm_time))
+    #    self.record_trainacc.append(np.array(top1.cpu()))
+    #    self.record_losses.append(np.array(losses))
+    #    self.record_accuracy.append(np.array(test_acc.cpu()))
+    #    print("test accuracy is:", test_acc)
+
+    def add_new(self, record_time, comp_time, comm_time, epoch_time, losses, test_acc):
+        self.training_stats["batch_time"].append(record_time)
+        self.training_stats["computing_time"].append(comp_time)
+        self.training_stats["communication_time"].append(comm_time)
+        self.training_stats["train_loss"].append(losses)
+        self.training_stats["test_acc"].append(test_acc.cpu())
         print("test accuracy is:", test_acc)
 
+    def add_total_time(self):
+        self.training_stats["total_time"] = sum(self.training_stats["batch_time"])
+
+    #def save_to_file(self):
+    #    np.savetxt(
+    #        self.saveFolderName + '/dsgd-lr' + str(self.args.lr) + '-budget' + str(self.args.budget) + '-r' + str(
+    #            self.rank) + '-recordtime.log', self.total_record_timing, delimiter=',')
+    #    np.savetxt(
+    #        self.saveFolderName + '/dsgd-lr' + str(self.args.lr) + '-budget' + str(self.args.budget) + '-r' + str(
+    #            self.rank) + '-time.log', self.record_timing, delimiter=',')
+    #    np.savetxt(
+    #        self.saveFolderName + '/dsgd-lr' + str(self.args.lr) + '-budget' + str(self.args.budget) + '-r' + str(
+    #            self.rank) + '-comptime.log', self.record_comp_timing, delimiter=',')
+    #    np.savetxt(
+    #        self.saveFolderName + '/dsgd-lr' + str(self.args.lr) + '-budget' + str(self.args.budget) + '-r' + str(
+    #            self.rank) + '-commtime.log', self.record_comm_timing, delimiter=',')
+    #    np.savetxt(
+    #        self.saveFolderName + '/dsgd-lr' + str(self.args.lr) + '-budget' + str(self.args.budget) + '-r' + str(
+    #            self.rank) + '-acc.log', self.record_accuracy, delimiter=',')
+    #    np.savetxt(
+    #        self.saveFolderName + '/dsgd-lr' + str(self.args.lr) + '-budget' + str(self.args.budget) + '-r' + str(
+    #            self.rank) + '-losses.log', self.record_losses, delimiter=',')
+    #    np.savetxt(
+    #        self.saveFolderName + '/dsgd-lr' + str(self.args.lr) + '-budget' + str(self.args.budget) + '-r' + str(
+    #            self.rank) + '-tacc.log', self.record_trainacc, delimiter=',')
+    #    with open(self.saveFolderName + '/ExpDescription', 'w') as f:
+    #        f.write(str(self.args) + '\n')
+    #        f.write(self.args.description + '\n')
+
     def save_to_file(self):
-        np.savetxt( 
-            self.saveFolderName + '/dsgd-lr' + str(self.args.lr) + '-budget' + str(self.args.budget) + '-r' + str(
-                self.rank) + '-recordtime.log', self.total_record_timing, delimiter=',')
-        np.savetxt(
-            self.saveFolderName + '/dsgd-lr' + str(self.args.lr) + '-budget' + str(self.args.budget) + '-r' + str(
-                self.rank) + '-time.log', self.record_timing, delimiter=',')
-        np.savetxt(
-            self.saveFolderName + '/dsgd-lr' + str(self.args.lr) + '-budget' + str(self.args.budget) + '-r' + str(
-                self.rank) + '-comptime.log', self.record_comp_timing, delimiter=',')
-        np.savetxt(
-            self.saveFolderName + '/dsgd-lr' + str(self.args.lr) + '-budget' + str(self.args.budget) + '-r' + str(
-                self.rank) + '-commtime.log', self.record_comm_timing, delimiter=',')
-        np.savetxt(
-            self.saveFolderName + '/dsgd-lr' + str(self.args.lr) + '-budget' + str(self.args.budget) + '-r' + str(
-                self.rank) + '-acc.log', self.record_accuracy, delimiter=',')
-        np.savetxt(
-            self.saveFolderName + '/dsgd-lr' + str(self.args.lr) + '-budget' + str(self.args.budget) + '-r' + str(
-                self.rank) + '-losses.log', self.record_losses, delimiter=',')
-        np.savetxt(
-            self.saveFolderName + '/dsgd-lr' + str(self.args.lr) + '-budget' + str(self.args.budget) + '-r' + str(
-                self.rank) + '-tacc.log', self.record_trainacc, delimiter=',')
-        with open(self.saveFolderName + '/ExpDescription', 'w') as f:
-            f.write(str(self.args) + '\n')
-            f.write(self.args.description + '\n')
+        with open(f"{self.saveFolderName}/{self.rank}.json", 'w') as f:
+            json.dump(self.training_stats, f)
+
 
 
 def test(model, test_loader):
