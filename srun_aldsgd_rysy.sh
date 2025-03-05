@@ -1,5 +1,5 @@
 #!/bin/bash
-srun --job-name=LLDSGD --nodes=5 --tasks-per-node=1 --cpus-per-task=1 --time=00:30:00 --gres=gpu:1 ~/venv_run.sh python run_cuda.py \
+srun --job-name=LLDSGD --nodes=5 --tasks-per-node=1 --cpus-per-task=1 --time=00:30:00 --gres=gpu:1 ~/venv_run.sh python3 run_cuda.py \
     --lr 0.4 \
     --bs 16 \
     --epoch 10 \
@@ -13,6 +13,10 @@ srun --job-name=LLDSGD --nodes=5 --tasks-per-node=1 --cpus-per-task=1 --time=00:
     --dataset cifar10 \
     --datasetRoot ~/data/ \
     --savePath LLDSGD \
+    --c1 0.3 \
+    --c2 0.1 \
+    --p1 0.2 \
+    --p2 0.2 \
     --randomSeed 1234 \
     --isNonIID False \
-    --iteration 5
+    --iteration 1

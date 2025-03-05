@@ -235,7 +235,7 @@ def run(rank, size):
         #rank, epoch, losses.avg, top1.avg, test_acc, epoch_time))
         recorder.add_new(record_time, comp_time, comm_time, epoch_time, losses.avg, test_acc.item())
         print("rank: %d, epoch: %.3f, loss: %.3f, train_acc: %.3f, epoch time: %.3f" % (
-        rank, epoch, losses.avg, test_acc, epoch_time))
+            rank, epoch, losses.avg, test_acc, epoch_time))
         if rank == 0:
             print("comp_time: %.3f, comm_time: %.3f, comp_time_budget: %.3f, comm_time_budget: %.3f" % (
             comp_time, comm_time, comp_time / epoch_time, comm_time / epoch_time))

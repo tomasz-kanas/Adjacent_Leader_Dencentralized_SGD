@@ -12,7 +12,7 @@ echo "NODELIST="${SLURM_NODELIST}
 
 source ~/venv/bin/activate
 
-srun python run_cuda.py \
+srun python3 run_cuda.py \
     --lr 0.4 \
     --bs 16 \
     --epoch 5 \
@@ -26,6 +26,10 @@ srun python run_cuda.py \
     --dataset cifar10 \
     --datasetRoot ~/data/ \
     --savePath LLDSGD \
+    --c1 0.3 \
+    --c2 0.1 \
+    --p1 0.2 \
+    --p2 0.2 \
     --randomSeed 1234 \
     --isNonIID False \
-    --iteration 5
+    --iteration 1
