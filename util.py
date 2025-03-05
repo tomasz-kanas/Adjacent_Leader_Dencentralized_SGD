@@ -360,7 +360,7 @@ class Recorder(object):
         self.training_stats["computing_time"].append(comp_time)
         self.training_stats["communication_time"].append(comm_time)
         self.training_stats["train_loss"].append(losses)
-        self.training_stats["test_acc"].append(test_acc.cpu())
+        self.training_stats["test_acc"].append(test_acc)
         print("test accuracy is:", test_acc)
 
     def add_total_time(self):

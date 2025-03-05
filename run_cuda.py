@@ -201,7 +201,7 @@ def run(rank, size):
             # communication happens here
             pull_force = (batch_idx == len(train_loader) - 1) or (batch_idx % args.iteration == 0)
             if (pull_force):
-                getInfo = communicator.LLDSGDcommunicate(model,loss)
+                getInfo = communicator.LLDSGDcommunicate(model, loss, args)
             else:
                 getInfo = communicator.communicate(model)
 
@@ -233,7 +233,7 @@ def run(rank, size):
         #recorder.add_new(record_time, comp_time, comm_time, epoch_time, top1.avg, losses.avg, test_acc)
         #print("rank: %d, epoch: %.3f, loss: %.3f, train_acc: %.3f, test_acc: %.3f epoch time: %.3f" % (
         #rank, epoch, losses.avg, top1.avg, test_acc, epoch_time))
-        recorder.add_new(record_time, comp_time, comm_time, epoch_time, losses.avg, test_acc)
+        recorder.add_new(record_time, comp_time, comm_time, epoch_time, losses.avg, test_acc.item())
         print("rank: %d, epoch: %.3f, loss: %.3f, train_acc: %.3f, epoch time: %.3f" % (
         rank, epoch, losses.avg, test_acc, epoch_time))
         if rank == 0:
@@ -325,7 +325,7 @@ if __name__ == '__main__':
     parser.add_argument('--isNonIID', default=False, type=bool, help='False: random partition; True: IID partition')
 
     #pull iteration
-    parser.add_argument('--LLDSGD', action='store_true', help='use MATCHA or not')
+    parser.add_argument('--LLDSGD', action='store_true', help='use LLDSGD or not')
     parser.add_argument('--iteration', type = int, default=40, help='iteration to pull')
     parser.add_argument('--c1', type = float, default=0.3, help='proportion for max degree neighbor')
     parser.add_argument('--c2', type=float, default=0.1, help='proportion for best performance neighbor with lowest loss')

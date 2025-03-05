@@ -3,16 +3,16 @@ srun --job-name=MATCHA --nodes=5 --tasks-per-node=1 --cpus-per-task=1 --time=00:
     --lr 0.4 \
     --bs 16 \
     --epoch 10 \
-    --matcha \
+    --LLDSGD \
     --budget 0.5 \
-    -n MATCHA \
+    -n LLDSGD \
     --model res \
     -p \
     --description experiment \
     --graphid 7 \
     --dataset cifar10 \
     --datasetRoot ~/data/ \
-    --savePath ./results/MATCHA \
+    --savePath MATCHA \
     --randomSeed 1234 \
     --isNonIID False \
     --iteration 5

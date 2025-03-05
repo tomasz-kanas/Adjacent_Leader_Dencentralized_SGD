@@ -87,6 +87,7 @@ class GraphProcessor(object):
         L_matrices = list()
         for i, subgraph in enumerate(self.subGraphs):
             tmp_G = nx.Graph()
+            tmp_G.add_nodes_from(list(range(self.size)))
             tmp_G.add_edges_from(subgraph)
             L_matrices.append(nx.laplacian_matrix(tmp_G, list(range(self.size))).todense())
 
