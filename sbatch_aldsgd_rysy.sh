@@ -1,8 +1,21 @@
-#!/bin/bash
-srun --job-name=LLDSGD --nodes=5 --tasks-per-node=1 --cpus-per-task=1 --time=00:30:00 --gres=gpu:1 ~/venv_run.sh python run_cuda.py \
+#!/usr/bin/env bash
+#
+#SBATCH --job-name=ALDSGD
+#SBATCH --time=30
+#SBATCH --output=output.txt
+#SBATCH --nodes=5
+#SBATCH --ntasks-per-node=1
+#SBATCH --cpus-per-task=1
+#SBATCH --gres=gpu:1
+
+echo "NODELIST="${SLURM_NODELIST}
+
+source ~/venv/bin/activate
+
+srun python run_cuda.py \
     --lr 0.4 \
     --bs 16 \
-    --epoch 10 \
+    --epoch 5 \
     --LLDSGD \
     --budget 0.5 \
     -n LLDSGD \
