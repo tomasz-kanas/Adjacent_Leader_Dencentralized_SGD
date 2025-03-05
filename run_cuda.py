@@ -36,8 +36,6 @@ from torch._C._distributed_c10d import (
     ReduceScatterOptions,
     ScatterOptions,
     Store,
-    DebugLevel,
-    get_debug_level,
 )
 
 cudnn.benchmark = True
