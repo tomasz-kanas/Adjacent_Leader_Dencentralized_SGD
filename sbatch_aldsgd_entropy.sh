@@ -5,7 +5,7 @@
 #SBATCH --qos=tkanas_common
 #SBATCH --time=30
 #SBATCH --output=output.txt
-#SBATCH --nodes=8
+#SBATCH --nodes=5
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=1
 #SBATCH --gres=gpu:1
