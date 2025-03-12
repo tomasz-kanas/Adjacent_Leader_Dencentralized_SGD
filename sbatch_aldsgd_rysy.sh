@@ -3,7 +3,7 @@
 #SBATCH --job-name=ALDSGD
 #SBATCH --time=30
 #SBATCH --output=output.txt
-#SBATCH --nodes=5
+#SBATCH --nodes=6
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=1
 #SBATCH --gres=gpu:1
@@ -22,7 +22,7 @@ srun python3 run_cuda.py \
     --model res \
     -p \
     --description experiment \
-    --graphid 7 \
+    --graphid 6 \
     --dataset cifar10 \
     --datasetRoot ~/data/ \
     --savePath LLDSGD \
