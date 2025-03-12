@@ -344,6 +344,7 @@ if __name__ == '__main__':
     torch.backends.cudnn.enable = True
     torch.backends.cudnn.benchmark = True
 
-    print(torch.cuda.is_available())
+    print(f"{size=}")
+    print(f"{torch.cuda.is_available()=}")
     print("program start!!!!")
     run(rank, size)

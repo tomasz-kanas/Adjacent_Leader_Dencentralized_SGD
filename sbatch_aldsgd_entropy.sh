@@ -14,7 +14,7 @@ echo "NODELIST="${SLURM_NODELIST}
 
 source ~/venv/bin/activate
 
-srun python3 run_cuda.py \
+mpirun python3 run_cuda.py \
     --lr 0.4 \
     --bs 16 \
     --epoch 5 \

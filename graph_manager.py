@@ -158,7 +158,8 @@ class GraphProcessor(object):
                      edge: (node1, node2)
         output connect: matrix: [[]]
         """
-        
+
+        print(f"{self.subGraphs=}")
         connect = []
         cnt = 1
         for graph in self.subGraphs:
